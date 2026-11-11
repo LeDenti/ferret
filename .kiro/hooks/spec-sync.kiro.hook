@@ -1,0 +1,13 @@
+{
+  "name": "spec-sync",
+  "description": "When requirements change, verify all requirement IDs are covered by tests.",
+  "version": "1.0.0",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [".kiro/specs/**/requirements.md"]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Read the file that was edited and extract all requirement IDs. Search tests/ for references to each ID. Report any ID with no test coverage and list the tests that do reference the changed requirements."
+  }
+}

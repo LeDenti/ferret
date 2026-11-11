@@ -1,0 +1,13 @@
+{
+  "name": "guard-reference",
+  "description": "Protect the independent Python oracle under reference/ from modification.",
+  "version": "1.0.0",
+  "when": {
+    "type": "fileEdited",
+    "patterns": ["reference/**"]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Revert the change to the file that was edited in reference/ using `git checkout -- <file>`. Explain that reference/ is the independent judge and must never be modified."
+  }
+}

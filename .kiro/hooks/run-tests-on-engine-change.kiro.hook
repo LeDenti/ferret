@@ -1,0 +1,13 @@
+{
+  "name": "run-tests-on-engine-change",
+  "description": "When engine code changes, run tests and report mismatches against the oracle.",
+  "version": "1.0.0",
+  "when": {
+    "type": "fileEdited",
+    "patterns": ["src/engine/**/*.ts"]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Run `npm test`. If tests/cases.test.ts fails, report the first mismatch with scenario id and step number, then fix the engine code (never modify reference/). If all tests pass, report success."
+  }
+}

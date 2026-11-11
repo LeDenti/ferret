@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "ferret-oracle": {
+      "command": "python3",
+      "args": ["reference/mcp_oracle.py"],
+      "disabled": false,
+      "autoApprove": ["replay_case"]
+    }
+  }
+}
