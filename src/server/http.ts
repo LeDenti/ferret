@@ -276,7 +276,7 @@ function validateArgs(op: string, args: unknown): string | null {
 
     case "buyback":
       if (!isValidString(a.invoice)) return "invoice must be a string ≤32 chars";
-      if (!isValidInt(a.amount, 0)) return "amount must be an integer 0..10^9";
+      if (a.payer !== undefined && !isValidString(a.payer)) return "payer must be a string ≤32 chars, alphanumeric+space/_-";
       return null;
 
     default:
