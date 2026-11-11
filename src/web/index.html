@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ferret</title>
+  <link rel="stylesheet" href="/app.css">
+  <!--
+    Element IDs for app.js (part 2):
+      Layout:   #app  #ferret  #ferret-svg  #mood-word  #ceilings
+                #book  #totals  #t-capital  #t-cash  #t-outstanding  #t-losses  #t-fees
+                #debtors (tbody)  #advances (tbody)  #log  #journal
+                #controls  #banner
+      Fund:     #fund-amount  #fund-btn
+      Invoice:  #inv-debtor  #inv-face  #inv-rate  #inv-term  #inv-analysis  #inv-btn
+      Repay:    #repay-advance  #repay-mode  #repay-btn
+      Default:  #default-advance  #default-btn
+      Buyback:  #buyback-advance  #buyback-btn
+      Withdraw: #withdraw-lender  #withdraw-btn
+      Time:     #tick-1  #tick-7  #tick-30
+      Reset:    #reset-btn
+  -->
+</head>
+<body>
+  <main id="app">
+
+    <!-- LEFT: the ferret -->
+    <section id="ferret" aria-label="The ferret">
+      <h2>The ferret</h2>
+      <svg id="ferret-svg" class="calm" viewBox="0 0 200 200" role="img"
+           aria-label="Ferret mood illustration">
+
+        <!-- calm: sitting upright, tail curled, eyes half-closed -->
+        <g class="calm">
+          <!-- curled tail -->
+          <path d="M124 158 Q165 165 168 135 Q170 108 148 106"
+                fill="none" stroke="#6a8d3b" stroke-width="11" stroke-linecap="round"/>
+          <!-- body sitting upright -->
+          <ellipse cx="100" cy="138" rx="30" ry="40" fill="#6a8d3b"/>
+          <!-- lighter belly -->
+          <ellipse cx="100" cy="146" rx="18" ry="26" fill="#7da053"/>
+          <!-- head -->
+          <circle cx="100" cy="78" r="25" fill="#6a8d3b"/>
+          <!-- ears -->
+          <ellipse cx="82" cy="59" rx="8" ry="11" fill="#6a8d3b" transform="rotate(-20 82 59)"/>
+          <ellipse cx="118" cy="59" rx="8" ry="11" fill="#6a8d3b" transform="rotate(20 118 59)"/>
+          <!-- inner ears -->
+          <ellipse cx="82" cy="61" rx="3" ry="6" fill="#3d5a1e" transform="rotate(-20 82 61)"/>
+          <ellipse cx="118" cy="61" rx="3" ry="6" fill="#3d5a1e" transform="rotate(20 118 61)"/>
+          <!-- eyes half-closed -->
+          <path d="M87 76 Q94 81 100 76" fill="none" stroke="#1a1a2e" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M100 76 Q106 81 113 76" fill="none" stroke="#1a1a2e" stroke-width="2.5" stroke-linecap="round"/>
+          <!-- nose -->
+          <path d="M96 87 L100 91 L104 87 Z" fill="#1a1a2e"/>
+          <!-- whiskers -->
+          <line x1="77" y1="88" x2="64" y2="86" stroke="#6a8d3b" stroke-width="1.2" stroke-linecap="round"/>
+          <line x1="77" y1="91" x2="64" y2="94" stroke="#6a8d3b" stroke-width="1.2" stroke-linecap="round"/>
+          <line x1="123" y1="88" x2="136" y2="86" stroke="#6a8d3b" stroke-width="1.2" stroke-linecap="round"/>
+          <line x1="123" y1="91" x2="136" y2="94" stroke="#6a8d3b" stroke-width="1.2" stroke-linecap="round"/>
+        </g>
+
+        <!-- wary: crouched low, eyes wide, tail straight -->
+        <g class="wary">
+          <!-- straight tail pointing left -->
+          <rect x="8" y="146" width="55" height="8" rx="4" fill="#d4a017" transform="rotate(-3 35 150)"/>
+          <circle cx="10" cy="145" r="5" fill="#d4a017"/>
+          <!-- body low and wide -->
+          <ellipse cx="90" cy="152" rx="48" ry="22" fill="#d4a017"/>
+          <!-- lighter belly -->
+          <ellipse cx="90" cy="160" rx="32" ry="13" fill="#e0b830"/>
+          <!-- head forward and low -->
+          <circle cx="148" cy="142" r="21" fill="#d4a017"/>
+          <!-- alert ears -->
+          <path d="M136 126 L131 110 L142 124 Z" fill="#d4a017"/>
+          <path d="M160 126 L165 110 L154 124 Z" fill="#d4a017"/>
+          <!-- inner ears -->
+          <path d="M136 124 L133 116 L140 122 Z" fill="#9a7a10"/>
+          <path d="M160 124 L163 116 L156 122 Z" fill="#9a7a10"/>
+          <!-- eyes wide open -->
+          <circle cx="141" cy="140" r="5" fill="#1a1a2e"/>
+          <circle cx="155" cy="140" r="5" fill="#1a1a2e"/>
+          <circle cx="142" cy="139" r="1.8" fill="#e8e0d0"/>
+          <circle cx="156" cy="139" r="1.8" fill="#e8e0d0"/>
+          <!-- nose -->
+          <path d="M144 150 L148 154 L152 150 Z" fill="#1a1a2e"/>
+          <!-- whiskers -->
+          <line x1="133" y1="151" x2="122" y2="149" stroke="#d4a017" stroke-width="1.2" stroke-linecap="round"/>
+          <line x1="133" y1="154" x2="122" y2="157" stroke="#d4a017" stroke-width="1.2" stroke-linecap="round"/>
+          <line x1="163" y1="151" x2="174" y2="149" stroke="#d4a017" stroke-width="1.2" stroke-linecap="round"/>
+          <line x1="163" y1="154" x2="174" y2="157" stroke="#d4a017" stroke-width="1.2" stroke-linecap="round"/>
+        </g>
+
+        <!-- feral: arched back, fur bristled, teeth showing -->
+        <g class="feral">
+          <!-- bristled tail pointing left -->
+          <path d="M38 168 Q16 160 8 148" fill="none" stroke="#c0392b" stroke-width="10" stroke-linecap="round"/>
+          <path d="M12 152 L4 146" fill="none" stroke="#c0392b" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M16 156 L8 156" fill="none" stroke="#c0392b" stroke-width="2.5" stroke-linecap="round"/>
+          <!-- arched body -->
+          <path d="M38 168 Q100 78 162 168 Q100 120 38 168 Z" fill="#c0392b"/>
+          <!-- belly -->
+          <path d="M55 168 Q100 130 145 168 Q100 150 55 168 Z" fill="#d0504a"/>
+          <!-- head low, right side -->
+          <circle cx="162" cy="162" r="18" fill="#c0392b"/>
+          <!-- ear flat back -->
+          <path d="M152 150 L144 140 L156 145 Z" fill="#c0392b"/>
+          <!-- fur bristled — zigzag spikes along the back -->
+          <path d="M48 108 L44 90 L54 102 L58 86 L68 100 L72 82 L82 96 L86 76 L96 92 L100 72 L110 88 L114 68 L124 84 L128 64 L138 80"
+                fill="none" stroke="#c0392b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          <!-- angry narrowed eyes -->
+          <path d="M152 154 L158 158 L164 154" fill="none" stroke="#1a1a2e" stroke-width="2.5" stroke-linecap="round"/>
+          <!-- teeth showing -->
+          <path d="M156 168 L159 174 L162 168" fill="#ffffff" stroke="#ffffff" stroke-width="0.5"/>
+          <path d="M162 168 L165 174 L168 168" fill="#ffffff" stroke="#ffffff" stroke-width="0.5"/>
+          <!-- nose -->
+          <circle cx="176" cy="162" r="2.5" fill="#1a1a2e"/>
+        </g>
+
+      </svg>
+      <p id="mood-word">calm</p>
+      <p id="ceilings"></p>
+    </section>
+
+    <!-- CENTRE: the book -->
+    <section id="book" aria-label="The book">
+      <h2>The book</h2>
+      <dl id="totals">
+        <dt>capital</dt><dd id="t-capital">—</dd>
+        <dt>cash on hand</dt><dd id="t-cash">—</dd>
+        <dt>outstanding</dt><dd id="t-outstanding">—</dd>
+        <dt>losses</dt><dd id="t-losses">—</dd>
+        <dt>fees</dt><dd id="t-fees">—</dd>
+      </dl>
+      <table id="debtors">
+        <thead>
+          <tr><th>debtor</th><th>exposure</th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+      <table id="advances">
+        <thead>
+          <tr><th>invoice</th><th>status</th><th>repaid</th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </section>
+
+    <!-- RIGHT: the field log -->
+    <section id="log" aria-label="The field log">
+      <h2>The field log</h2>
+      <ol id="journal"></ol>
+    </section>
+
+  </main>
+
+  <!-- CONTROLS: fixed choices only -->
+  <nav id="controls" aria-label="Controls">
+
+    <div class="ctrl-group">
+      <label for="fund-amount">Fund pool</label>
+      <select id="fund-amount">
+        <option value="1000">1 000</option>
+        <option value="5000">5 000</option>
+        <option value="20000">20 000</option>
+      </select>
+      <button id="fund-btn" type="button">Fund</button>
+    </div>
+
+    <div class="ctrl-group">
+      <label for="inv-debtor">Add invoice</label>
+      <select id="inv-debtor">
+        <option value="D1">D1</option>
+        <option value="D2">D2</option>
+        <option value="D3">D3</option>
+        <option value="D4">D4</option>
+      </select>
+      <select id="inv-face">
+        <option value="1000">face 1 000</option>
+        <option value="5000">face 5 000</option>
+        <option value="10000">face 10 000</option>
+        <option value="25000">face 25 000</option>
+        <option value="50000">face 50 000</option>
+      </select>
+      <select id="inv-rate">
+        <option value="80">advance 80%</option>
+        <option value="90">advance 90%</option>
+        <option value="100">advance 100%</option>
+      </select>
+      <select id="inv-term">
+        <option value="7">due in 7 d</option>
+        <option value="30">due in 30 d</option>
+        <option value="90">due in 90 d</option>
+        <option value="120">due in 120 d</option>
+      </select>
+      <select id="inv-analysis">
+        <option value="yes">analysis: yes</option>
+        <option value="no">analysis: no</option>
+      </select>
+      <button id="inv-btn" type="button">Add</button>
+    </div>
+
+    <div class="ctrl-group">
+      <label for="repay-advance">Repay</label>
+      <select id="repay-advance">
+        <option value="">— pick invoice —</option>
+      </select>
+      <select id="repay-mode">
+        <option value="full">full</option>
+        <option value="half">half</option>
+        <option value="surplus">plus surplus</option>
+      </select>
+      <button id="repay-btn" type="button">Repay</button>
+    </div>
+
+    <div class="ctrl-group">
+      <label for="default-advance">Default</label>
+      <select id="default-advance">
+        <option value="">— pick invoice —</option>
+      </select>
+      <button id="default-btn" type="button">Default</button>
+    </div>
+
+    <div class="ctrl-group">
+      <label for="buyback-advance">Buyback</label>
+      <select id="buyback-advance">
+        <option value="">— pick invoice —</option>
+      </select>
+      <button id="buyback-btn" type="button">Buyback</button>
+    </div>
+
+    <div class="ctrl-group">
+      <label for="withdraw-lender">Withdraw</label>
+      <select id="withdraw-lender">
+        <option value="">— pick lender —</option>
+      </select>
+      <button id="withdraw-btn" type="button">Withdraw</button>
+    </div>
+
+    <div class="ctrl-group">
+      <label>Advance time</label>
+      <button id="tick-1" type="button">Next day</button>
+      <button id="tick-7" type="button">+7 days</button>
+      <button id="tick-30" type="button">+30 days</button>
+    </div>
+
+    <div class="ctrl-group">
+      <button id="reset-btn" type="button">Reset</button>
+    </div>
+
+  </nav>
+
+  <!-- Refusal banner -->
+  <div id="banner" hidden role="status" aria-live="polite"></div>
+
+  <script src="/app.js" defer></script>
+</body>
+</html>
