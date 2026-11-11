@@ -9,6 +9,6 @@ services:
     healthCheckPath: /healthz
     envVars:
       - key: NODE_VERSION
-        value: "26"
+        value: "24"
       - key: PORT
         value: "10000"
