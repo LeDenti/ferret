@@ -20,12 +20,39 @@ not, and watch Ferret decide, explain, and change mood. The journal is written l
 
 ## How it was built, in Kiro
 
-*(Filled from the actual history: specs, steering, hooks, MCP, the agent; what spec-mode gave versus vibe-mode.)*
+Everything under `src/`, `tests/` and `.kiro/` was produced by **Kiro CLI 3.2.0** (`kiro-cli chat`), non-interactive,
+with read and write tools only, in this order. The commit history is the log.
 
-Spec first. Every rule of the pool is one EARS requirement in `.kiro/specs/`; Kiro derived the design, the
-tasks, the properties, and the engine in `src/`. Then the differential test: a Python reference written
-independently throws thousands of random events at both engines and compares every decision and every
-balance (`reference/CASES.md`).
+1. **Steering** (`.kiro/steering/`): product, tech, structure. Three non-negotiables came from here and held all the
+   way: integer arithmetic only, zero runtime dependencies, `reference/` is read-only.
+2. **Spec `mood`**: 11 EARS requirements, a design with the TypeScript interface, an overflow analysis and 9
+   correctness properties, a task list. Then the module and 18 tests, all green on the first run.
+3. **Spec `invoice-pool`**: 14 requirements including the twelve checks in their exact order, a design, tasks.
+   Then `src/engine/invoices.ts` in one pass, and the differential test: Kiro's engine replayed the 4 926 oracle
+   steps (120 scenarios) with **zero mismatch on the first run**. The four unit tests that failed were Kiro's own
+   expectations being wrong (they forgot the mood moves on a ceiling refusal); the engine was right, the oracle
+   settled it.
+4. **Spec `server`** and the demo server: `node:http`, one pool per visitor, validation, rate limit; checked
+   endpoint by endpoint with curl.
+5. **Spec `field-log-ui`** and the screen.
+6. **Hooks, agent, MCP** (`.kiro/hooks/`, `.kiro/agents/immunologist.md`, `.kiro/settings/mcp.json`): tests on
+   every engine edit, a guard that reverts any change under `reference/`, a reviewer that checks the three rules
+   that matter, and the oracle itself exposed as an MCP tool (`replay_events`) so Kiro can ask the judge instead of
+   guessing.
+
+**Spec mode versus vibe mode.** The engine was spec-first; the screen was closer to a conversation. The spec cost
+more credits per file and paid for itself the moment the differential test ran: every requirement was already a
+test, every property already a property test, and a disagreement between two implementations was settled by one
+command rather than a debate.
+
+**What did not work, honestly.** On the free plan Kiro CLI throttles for about fifteen minutes after a burst of
+large reads, and in non-interactive mode it drafts files in the chat unless told in so many words to write them to
+disk. The fixes were small prompts, short read lists, one spec at a time, and never letting the agent open the
+4 MB case file.
+
+**Who typed.** The developer did not drive Kiro by hand: on their instruction, an AI assistant (Claude Code) wrote
+the prompts to Kiro CLI, ran the tests between calls and committed the results. Kiro produced the code; the oracle
+judged it; the developer decided the scope, the name, the rules and what to disclose.
 
 ## One ferret, three burrows
 
