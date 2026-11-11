@@ -67,10 +67,10 @@ The engine, the mood and the case file are shared. A use case is a rule pack:
 The idea of a rule engine with ceilings comes from our own earlier prototypes of an invoice-advance pool
 (1 and 5 November 2026, inside the submission period, in another repository under this account); none
 of their code is included. The Python reference oracle in `reference/` was written on 11 November 2026
-with a different AI assistant (Claude Code) and is used only as a test judge. The mood model is a
+with a different AI assistant (Claude Code) and is used only as a test judge; the small MCP server that exposes it (`reference/mcp_oracle.py`) is part of that judge side. The mood model is a
 transposition of a measurement from our research project XRPLife (the sentiment layer of *C. elegans* on
 the XRP Ledger, 4 November 2026), cited as inspiration; none of its code is included. Everything under
-`src/`, `tools/` and `.kiro/`, the web app and the hooks were built in Kiro from the specs.
+`src/`, `tests/` and `.kiro/`, the web app, the hooks and the MCP configuration were built in Kiro from the specs.
 
 ## Honest limits
 
