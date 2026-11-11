@@ -1,0 +1,13 @@
+# Ferret. NOTE: .kiro/ is tracked on purpose (the judges read it). Never add it here.
+node_modules/
+dist/
+build/
+coverage/
+.venv/
+__pycache__/
+*.pyc
+.env
+.env.*
+*.key
+*.pem
+.DS_Store
