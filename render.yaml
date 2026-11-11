@@ -1,0 +1,14 @@
+# Render blueprint for the Ferret demo (play money only). One free web service, no database.
+services:
+  - type: web
+    name: ferret
+    runtime: node
+    plan: free
+    buildCommand: "npm ci --ignore-scripts || true"
+    startCommand: "node src/server/index.ts"
+    healthCheckPath: /healthz
+    envVars:
+      - key: NODE_VERSION
+        value: "26"
+      - key: PORT
+        value: "10000"

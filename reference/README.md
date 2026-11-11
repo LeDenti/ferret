@@ -13,3 +13,6 @@ independent implementation on thousands of random cases.
 Python 3.10+, standard library only. `python3 -I generate_cases.py && python3 -I replay_cases.py`.
 
 Written with Claude Code on 11 November 2026, inside the hackathon period, and disclosed as such in the root README.
+
+- `mcp_oracle.py`: a minimal MCP server (stdio, standard library) exposing `replay_events`, so that Kiro can ask the
+  judge what must happen on a given sequence of events while it builds. Declared in `.kiro/settings/mcp.json`.
