@@ -13,7 +13,7 @@ stitched to the sentiment layer of a one-millimetre worm.
 
 ## Try it
 
-*(URL of the running app, added at submission. Nothing real: play money, no wallet, no sign-up.)*
+**https://ferret-amw8.onrender.com** (free tier: the first load after an idle period takes up to a minute). Nothing real: play money, no wallet, no sign-up.
 
 The visitor plays the supplier, the debtor and the lender at once: fund the pool, add invoices, repay or
 not, and watch Ferret decide, explain, and change mood. The journal is written like a field log.
